@@ -1,11 +1,14 @@
 package com.jinsub.housekeeping.api.category.model.entity;
 
 import com.jinsub.housekeeping.api.transaction.enums.TransactionType;
+import com.jinsub.housekeeping.api.transaction.model.entity.Transaction;
 import com.jinsub.housekeeping.base.converter.BooleanToYNConverter;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,6 +21,9 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long categoryId;
+
+    @OneToMany(mappedBy = "category")
+    private List<Transaction> transactionList = new ArrayList<>();
 
     @Column
     private String categoryName;
