@@ -39,4 +39,21 @@ public class UserRepositoryTests {
         assertThat(testUser.getHashedEmail()).isEqualTo(CryptoHelper.getSha256HashedString(testUserEmail));
         assertThat(testUser.getHashedPassword()).isEqualTo(CryptoHelper.getSha256HashedString(testUserPassword));
     }
+
+    @Test
+    public void 생성시간_수정시간_자동화() throws Exception {
+
+        LocalDateTime now = LocalDateTime.of(2020, 6, 1, 0, 0, 0);
+        User savedUser = userRepository.save(User.builder()
+                .userName("test user name")
+                .hashedEmail(CryptoHelper.getSha256HashedString("test@email.com"))
+                .hashedPassword(CryptoHelper.getSha256HashedString("test password"))
+                .build());
+
+        User testUser = userRepository.findById(savedUser.getUserId()).get();
+        System.out.println("createdAt: " + testUser.getCreatedAt() + ", modifiedAt: " + testUser.getModifiedAt());
+
+        assertThat(testUser.getCreatedAt()).isAfter(now);
+        assertThat(testUser.getModifiedAt()).isAfter(now);
+    }
 }
