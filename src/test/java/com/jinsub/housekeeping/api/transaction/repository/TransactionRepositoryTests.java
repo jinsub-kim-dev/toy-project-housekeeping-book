@@ -65,8 +65,6 @@ public class TransactionRepositoryTests {
                 .userName("test user name")
                 .hashedEmail(CryptoHelper.getSha256HashedString("test@email.com"))
                 .hashedPassword(CryptoHelper.getSha256HashedString("test password"))
-                .createdAt(LocalDateTime.now())
-                .modifiedAt(LocalDateTime.now())
                 .build();
 
         em.persist(user);
@@ -78,8 +76,6 @@ public class TransactionRepositoryTests {
                 .categoryName("test category name")
                 .transactionType(TransactionType.INCOME)
                 .common(true)
-                .createdAt(LocalDateTime.now())
-                .modifiedAt(LocalDateTime.now())
                 .build();
 
         em.persist(category);

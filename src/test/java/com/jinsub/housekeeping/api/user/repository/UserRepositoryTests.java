@@ -31,8 +31,6 @@ public class UserRepositoryTests {
                 .userName(testUserName)
                 .hashedEmail(CryptoHelper.getSha256HashedString(testUserEmail))
                 .hashedPassword(CryptoHelper.getSha256HashedString(testUserPassword))
-                .createdAt(LocalDateTime.now())
-                .modifiedAt(LocalDateTime.now())
                 .build());
 
         User testUser = userRepository.findById(savedUser.getUserId()).get();

@@ -1,6 +1,7 @@
 package com.jinsub.housekeeping.api.user.model.entity;
 
 import com.jinsub.housekeeping.api.transaction.model.entity.Transaction;
+import com.jinsub.housekeeping.base.entity.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -14,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "tb_user")
-public class User {
+public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,10 +32,4 @@ public class User {
 
     @Column
     private String hashedPassword;
-
-    @Column
-    private LocalDateTime createdAt;
-
-    @Column
-    private LocalDateTime modifiedAt;
 }

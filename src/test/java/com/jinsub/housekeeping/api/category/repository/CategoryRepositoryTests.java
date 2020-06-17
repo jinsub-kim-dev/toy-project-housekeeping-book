@@ -30,8 +30,6 @@ public class CategoryRepositoryTests {
                 .categoryName(testCategoryName)
                 .transactionType(testTransactionType)
                 .common(testCommon)
-                .createdAt(LocalDateTime.now())
-                .modifiedAt(LocalDateTime.now())
                 .build());
 
         Category testCategory = categoryRepository.findById(savedCategory.getCategoryId()).get();

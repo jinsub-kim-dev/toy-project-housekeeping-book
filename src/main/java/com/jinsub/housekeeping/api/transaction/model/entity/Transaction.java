@@ -4,6 +4,7 @@ import com.jinsub.housekeeping.api.category.model.entity.Category;
 import com.jinsub.housekeeping.api.transaction.enums.AssetType;
 import com.jinsub.housekeeping.api.transaction.enums.TransactionType;
 import com.jinsub.housekeeping.api.user.model.entity.User;
+import com.jinsub.housekeeping.base.entity.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Transaction {
+public class Transaction extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,10 +46,4 @@ public class Transaction {
 
     @Column
     private String details;
-
-    @Column
-    private LocalDateTime createdAt;
-
-    @Column
-    private LocalDateTime modifiedAt;
 }
