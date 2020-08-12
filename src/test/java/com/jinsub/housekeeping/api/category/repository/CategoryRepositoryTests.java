@@ -1,5 +1,6 @@
 package com.jinsub.housekeeping.api.category.repository;
 
+import com.jinsub.housekeeping.api.category.enums.CategoryType;
 import com.jinsub.housekeeping.api.category.model.entity.Category;
 import com.jinsub.housekeeping.api.transaction.enums.TransactionType;
 import org.junit.Test;
@@ -24,18 +25,18 @@ public class CategoryRepositoryTests {
 
         String testCategoryName = "test category name";
         TransactionType testTransactionType = TransactionType.EXPENSE;
-        boolean testCommon = true;
+        CategoryType testCategoryType = CategoryType.COMMON;
 
         Category savedCategory = categoryRepository.save(Category.builder()
                 .categoryName(testCategoryName)
                 .transactionType(testTransactionType)
-                .common(testCommon)
+                .categoryType(testCategoryType)
                 .build());
 
         Category testCategory = categoryRepository.findById(savedCategory.getCategoryId()).get();
 
         assertThat(testCategory.getCategoryName()).isEqualTo(testCategoryName);
         assertThat(testCategory.getTransactionType()).isEqualTo(testTransactionType);
-        assertThat(testCategory.isCommon()).isEqualTo(testCommon);
+        assertThat(testCategory.getCategoryType()).isEqualTo(testCategoryType);
     }
 }

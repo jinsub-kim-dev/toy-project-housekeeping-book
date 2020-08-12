@@ -1,5 +1,6 @@
 package com.jinsub.housekeeping.api.transaction.repository;
 
+import com.jinsub.housekeeping.api.category.enums.CategoryType;
 import com.jinsub.housekeeping.api.category.model.entity.Category;
 import com.jinsub.housekeeping.api.transaction.enums.AssetType;
 import com.jinsub.housekeeping.api.transaction.enums.TransactionType;
@@ -75,7 +76,7 @@ public class TransactionRepositoryTests {
         Category category = Category.builder()
                 .categoryName("test category name")
                 .transactionType(TransactionType.INCOME)
-                .common(true)
+                .categoryType(CategoryType.COMMON)
                 .build();
 
         em.persist(category);
