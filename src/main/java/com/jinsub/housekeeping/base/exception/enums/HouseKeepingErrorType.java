@@ -6,6 +6,7 @@ import lombok.Getter;
 public enum HouseKeepingErrorType {
 
     POLICY_VIOLATION_NOT_EXIST_USER(410, "policy.violation.not.exist.user"),
+    POLICY_VIOLATION_ALREADY_EXIST_USER(411, "policy.violation.already.exist.user"),
 
     UNKOWN(999, "unexpected.exception");
 
