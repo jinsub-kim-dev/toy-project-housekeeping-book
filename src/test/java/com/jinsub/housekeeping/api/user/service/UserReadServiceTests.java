@@ -1,7 +1,8 @@
-package com.jinsub.housekeeping.api.user;
+package com.jinsub.housekeeping.api.user.service;
 
 import com.jinsub.housekeeping.api.user.model.entity.User;
 import com.jinsub.housekeeping.api.user.repository.UserRepository;
+import com.jinsub.housekeeping.api.user.service.UserReadService;
 import com.jinsub.housekeeping.base.exception.model.HouseKeepingException;
 import com.jinsub.housekeeping.base.helper.CryptoHelper;
 import org.junit.Test;

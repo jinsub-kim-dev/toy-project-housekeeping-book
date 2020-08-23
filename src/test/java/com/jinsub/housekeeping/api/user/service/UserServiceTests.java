@@ -1,6 +1,7 @@
-package com.jinsub.housekeeping.api.user;
+package com.jinsub.housekeeping.api.user.service;
 
 import com.jinsub.housekeeping.api.user.model.entity.User;
+import com.jinsub.housekeeping.api.user.service.UserService;
 import com.jinsub.housekeeping.base.exception.model.HouseKeepingException;
 import com.jinsub.housekeeping.base.helper.CryptoHelper;
 import org.junit.Test;
@@ -39,8 +40,10 @@ public class UserServiceTests {
         String testUserEmail = "test@email.com";
         String testUserPassword = "test_user_password";
 
-        User createdUser = userService.createUser(testUserName, testUserEmail, testUserPassword);
+        // 정상적으로 실행된 생성 로직
+        userService.createUser(testUserName, testUserEmail, testUserPassword);
 
+        // 이름이 중복되는 비정상 생성 로직, HouseKeepingException 예외 발생
         userService.createUser(testUserName, testUserEmail, testUserPassword);
     }
 }
