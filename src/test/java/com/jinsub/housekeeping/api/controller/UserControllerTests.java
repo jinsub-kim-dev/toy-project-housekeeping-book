@@ -64,4 +64,52 @@ public class UserControllerTests {
 
         assertThat(testUser.getUserName()).isEqualTo(testUserName);
     }
+
+    @Test
+    public void 아이디로_유저를_조회한다() throws NoSuchAlgorithmException {
+
+        String testUserName = "test user name";
+        String testUserEmail = "test@email.com";
+        String testUserPassword = "test_user_password";
+        User savedUser = userRepository.save(User.builder()
+                .userName(testUserName)
+                .hashedEmail(testUserEmail)
+                .hashedPassword(testUserPassword)
+                .build());
+
+        String url = "http://localhost:" + port + "/api/v1/user/id?userId=" + savedUser.getUserId();
+
+        ResponseEntity<CodeResponse> responseEntity = testRestTemplate.getForEntity(url, CodeResponse.class);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        CodeResponse codeResponse = CodeResponse.class.cast(responseEntity.getBody());
+        UserDto.ReadResponse response = objectMapper.convertValue(codeResponse.getResult(), UserDto.ReadResponse.class);
+        User testUser = userRepository.findById(response.getUserId()).get();
+
+        assertThat(testUser.getUserName()).isEqualTo(testUserName);
+    }
+
+    @Test
+    public void 이름으로_유저를_조회한다() throws NoSuchAlgorithmException {
+
+        String testUserName = "test user name";
+        String testUserEmail = "test@email.com";
+        String testUserPassword = "test_user_password";
+        User savedUser = userRepository.save(User.builder()
+                .userName(testUserName)
+                .hashedEmail(testUserEmail)
+                .hashedPassword(testUserPassword)
+                .build());
+
+        String url = "http://localhost:" + port + "/api/v1/user/name?userName=" + savedUser.getUserName();
+
+        ResponseEntity<CodeResponse> responseEntity = testRestTemplate.getForEntity(url, CodeResponse.class);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        CodeResponse codeResponse = CodeResponse.class.cast(responseEntity.getBody());
+        UserDto.ReadResponse response = objectMapper.convertValue(codeResponse.getResult(), UserDto.ReadResponse.class);
+        User testUser = userRepository.findById(response.getUserId()).get();
+
+        assertThat(testUser.getUserName()).isEqualTo(testUserName);
+    }
 }
