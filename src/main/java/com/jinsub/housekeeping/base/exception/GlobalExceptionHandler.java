@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
         if (exception instanceof HouseKeepingException) {
             errorType = ((HouseKeepingException) exception).getErrorType();
         } else {
-            errorType = HouseKeepingErrorType.UNKOWN;
+            errorType = HouseKeepingErrorType.UNKNOWN;
         }
 
         return CodeResponse.failCodeMessage(errorType.getErrorCode(), errorType.getMessage());
