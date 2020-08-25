@@ -40,4 +40,24 @@ public class CategoryDto implements Serializable {
                     .build();
         }
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ReadResponse {
+        private long categoryId;
+        private String categoryName;
+        private TransactionType transactionType;
+        private CategoryType categoryType;
+
+        public static ReadResponse of(Category category) {
+            return ReadResponse.builder()
+                    .categoryId(category.getCategoryId())
+                    .categoryName(category.getCategoryName())
+                    .transactionType(category.getTransactionType())
+                    .categoryType(category.getCategoryType())
+                    .build();
+        }
+    }
 }

@@ -65,4 +65,28 @@ public class CategoryControllerTests {
         assertThat(testCategory.getTransactionType()).isEqualTo(testTransactionType);
         assertThat(testCategory.getCategoryType()).isEqualTo(testCategoryType);
     }
+
+    @Test
+    public void 아이디로_카테고리를_조회한다() {
+        String testCategoryName = "test category name";
+        TransactionType testTransactionType = TransactionType.EXPENSE;
+        CategoryType testCategoryType = CategoryType.COMMON;
+        Category savedCategory = categoryRepository.save(Category.builder()
+                .categoryName(testCategoryName)
+                .transactionType(testTransactionType)
+                .categoryType(testCategoryType)
+                .build());
+
+        String url = "http://localhost:" + port + "/api/v1/category/id?categoryId=" + savedCategory.getCategoryId();
+
+        ResponseEntity<CodeResponse> responseEntity = testRestTemplate.getForEntity(url, CodeResponse.class);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        CodeResponse codeResponse = CodeResponse.class.cast(responseEntity.getBody());
+        CategoryDto.ReadResponse response = objectMapper.convertValue(codeResponse.getResult(), CategoryDto.ReadResponse.class);
+
+        assertThat(response.getCategoryName()).isEqualTo(testCategoryName);
+        assertThat(response.getTransactionType()).isEqualTo(testTransactionType);
+        assertThat(response.getCategoryType()).isEqualTo(testCategoryType);
+    }
 }
