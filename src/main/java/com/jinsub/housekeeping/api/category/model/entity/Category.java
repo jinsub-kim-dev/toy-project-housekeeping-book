@@ -22,7 +22,8 @@ public class Category extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long categoryId;
 
-    @OneToMany(mappedBy = "category")
+    @Builder.Default
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Transaction> transactionList = new ArrayList<>();
 
     @Column
