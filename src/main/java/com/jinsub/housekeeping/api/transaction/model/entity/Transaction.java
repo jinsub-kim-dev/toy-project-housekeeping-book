@@ -11,7 +11,6 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -46,4 +45,20 @@ public class Transaction extends BaseTimeEntity {
 
     @Column
     private String details;
+
+    public void setUser(User user) {
+        if (this.user != null) {
+            this.user.getTransactionList().remove(this);
+        }
+        this.user = user;
+        this.user.getTransactionList().add(this);
+    }
+
+    public void setCategory(Category category) {
+        if (this.category != null) {
+            this.category.getTransactionList().remove(this);
+        }
+        this.category = category;
+        this.category.getTransactionList().add(this);
+    }
 }
