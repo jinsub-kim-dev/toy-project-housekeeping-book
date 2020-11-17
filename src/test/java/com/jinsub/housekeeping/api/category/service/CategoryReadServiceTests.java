@@ -23,7 +23,7 @@ public class CategoryReadServiceTests {
     CategoryReadService categoryReadService;
 
     @Test
-    public void Id로_카테고리를_조회한() {
+    public void Id로_카테고리를_조회한다() {
 
         String testCategoryName = "test category name";
         TransactionType testTransactionType = TransactionType.EXPENSE;
