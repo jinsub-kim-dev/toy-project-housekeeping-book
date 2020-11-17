@@ -1,6 +1,8 @@
 package com.jinsub.housekeeping.api.controller;
 
-import com.jinsub.housekeeping.api.category.model.dto.CategoryDto;
+import com.jinsub.housekeeping.api.category.model.dto.CreateCategoryRequestDto;
+import com.jinsub.housekeeping.api.category.model.dto.CreateCategoryResponseDto;
+import com.jinsub.housekeeping.api.category.model.dto.ReadCategoryResponseDto;
 import com.jinsub.housekeeping.api.category.model.entity.Category;
 import com.jinsub.housekeeping.api.category.service.CategoryReadService;
 import com.jinsub.housekeeping.api.category.service.CategoryService;
@@ -20,9 +22,9 @@ public class CategoryController {
 
     @PostMapping({"", "/"})
     @ResponseBody
-    public CodeResponse createCategory(@RequestBody CategoryDto.CreateRequest request) {
+    public CodeResponse createCategory(@RequestBody CreateCategoryRequestDto request) {
         Category createdCategory = categoryService.createCategory(request.getCategoryName(), request.getTransactionType(), request.getCategoryType());
-        CategoryDto.CreateResponse response = CategoryDto.CreateResponse.of(createdCategory);
+        CreateCategoryResponseDto response = CreateCategoryResponseDto.of(createdCategory);
         return CodeResponse.successResult(response);
     }
 
@@ -30,7 +32,7 @@ public class CategoryController {
     @ResponseBody
     public CodeResponse readCategoryById(@RequestParam long categoryId) {
         Category readCategory = categoryReadService.getCategoryById(categoryId);
-        CategoryDto.ReadResponse response = CategoryDto.ReadResponse.of(readCategory);
+        ReadCategoryResponseDto response = ReadCategoryResponseDto.of(readCategory);
         return CodeResponse.successResult(response);
     }
 }
