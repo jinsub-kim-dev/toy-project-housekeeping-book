@@ -1,7 +1,9 @@
 package com.jinsub.housekeeping.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jinsub.housekeeping.api.user.model.dto.UserDto;
+import com.jinsub.housekeeping.api.user.model.dto.CreateUserRequestDto;
+import com.jinsub.housekeeping.api.user.model.dto.CreateUserResponseDto;
+import com.jinsub.housekeeping.api.user.model.dto.ReadUserResponseDto;
 import com.jinsub.housekeeping.api.user.model.entity.User;
 import com.jinsub.housekeeping.api.user.repository.UserRepository;
 import com.jinsub.housekeeping.base.model.CodeResponse;
@@ -44,7 +46,7 @@ public class UserControllerTests {
         String testUserName = "test user name";
         String testUserEmail = "test@email.com";
         String testUserPassword = "test_user_password";
-        UserDto.CreateRequest request = UserDto.CreateRequest.builder()
+        CreateUserRequestDto request = CreateUserRequestDto.builder()
                 .userName(testUserName)
                 .email(testUserEmail)
                 .password(testUserPassword)
@@ -59,7 +61,7 @@ public class UserControllerTests {
 
         ObjectMapper objectMapper = new ObjectMapper();
         CodeResponse codeResponse = CodeResponse.class.cast(responseEntity.getBody());
-        UserDto.CreateResponse response = objectMapper.convertValue(codeResponse.getResult(), UserDto.CreateResponse.class);
+        CreateUserResponseDto response = objectMapper.convertValue(codeResponse.getResult(), CreateUserResponseDto.class);
         User testUser = userRepository.findById(response.getUserId()).get();
 
         assertThat(testUser.getUserName()).isEqualTo(testUserName);
@@ -83,7 +85,7 @@ public class UserControllerTests {
 
         ObjectMapper objectMapper = new ObjectMapper();
         CodeResponse codeResponse = CodeResponse.class.cast(responseEntity.getBody());
-        UserDto.ReadResponse response = objectMapper.convertValue(codeResponse.getResult(), UserDto.ReadResponse.class);
+        ReadUserResponseDto response = objectMapper.convertValue(codeResponse.getResult(), ReadUserResponseDto.class);
         User testUser = userRepository.findById(response.getUserId()).get();
 
         assertThat(testUser.getUserName()).isEqualTo(testUserName);
@@ -107,7 +109,7 @@ public class UserControllerTests {
 
         ObjectMapper objectMapper = new ObjectMapper();
         CodeResponse codeResponse = CodeResponse.class.cast(responseEntity.getBody());
-        UserDto.ReadResponse response = objectMapper.convertValue(codeResponse.getResult(), UserDto.ReadResponse.class);
+        ReadUserResponseDto response = objectMapper.convertValue(codeResponse.getResult(), ReadUserResponseDto.class);
         User testUser = userRepository.findById(response.getUserId()).get();
 
         assertThat(testUser.getUserName()).isEqualTo(testUserName);

@@ -1,6 +1,8 @@
 package com.jinsub.housekeeping.api.controller;
 
-import com.jinsub.housekeeping.api.user.model.dto.UserDto;
+import com.jinsub.housekeeping.api.user.model.dto.CreateUserRequestDto;
+import com.jinsub.housekeeping.api.user.model.dto.CreateUserResponseDto;
+import com.jinsub.housekeeping.api.user.model.dto.ReadUserResponseDto;
 import com.jinsub.housekeeping.api.user.model.entity.User;
 import com.jinsub.housekeeping.api.user.service.UserReadService;
 import com.jinsub.housekeeping.api.user.service.UserService;
@@ -22,9 +24,9 @@ public class UserController {
 
     @PostMapping({"", "/"})
     @ResponseBody
-    CodeResponse createUser(@RequestBody UserDto.CreateRequest request) throws NoSuchAlgorithmException {
+    CodeResponse createUser(@RequestBody CreateUserRequestDto request) throws NoSuchAlgorithmException {
         User createdUser = userService.createUser(request.getUserName(), request.getEmail(), request.getPassword());
-        UserDto.CreateResponse createdUserResponse = UserDto.CreateResponse.of(createdUser);
+        CreateUserResponseDto createdUserResponse = CreateUserResponseDto.of(createdUser);
         return CodeResponse.successResult(createdUserResponse);
     }
 
@@ -32,7 +34,7 @@ public class UserController {
     @ResponseBody
     CodeResponse readUserById(@RequestParam long userId) {
         User readUser = userReadService.getUserById(userId);
-        UserDto.ReadResponse readUserResponse = UserDto.ReadResponse.of(readUser);
+        ReadUserResponseDto readUserResponse = ReadUserResponseDto.of(readUser);
         return CodeResponse.successResult(readUserResponse);
     }
 
@@ -40,7 +42,7 @@ public class UserController {
     @ResponseBody
     CodeResponse readUserByName(@RequestParam String userName) {
         User readUser = userReadService.getUserByName(userName);
-        UserDto.ReadResponse readUserResponse = UserDto.ReadResponse.of(readUser);
+        ReadUserResponseDto readUserResponse = ReadUserResponseDto.of(readUser);
         return CodeResponse.successResult(readUserResponse);
     }
 }
