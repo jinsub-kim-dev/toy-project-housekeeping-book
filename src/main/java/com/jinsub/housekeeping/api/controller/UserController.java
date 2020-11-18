@@ -3,6 +3,7 @@ package com.jinsub.housekeeping.api.controller;
 import com.jinsub.housekeeping.api.user.model.dto.CreateUserRequestDto;
 import com.jinsub.housekeeping.api.user.model.dto.CreateUserResponseDto;
 import com.jinsub.housekeeping.api.user.model.dto.ReadUserResponseDto;
+import com.jinsub.housekeeping.api.user.model.dto.UserDto;
 import com.jinsub.housekeeping.api.user.model.entity.User;
 import com.jinsub.housekeeping.api.user.service.UserReadService;
 import com.jinsub.housekeeping.api.user.service.UserService;
@@ -26,7 +27,8 @@ public class UserController {
     @ResponseBody
     CodeResponse createUser(@RequestBody CreateUserRequestDto request) throws NoSuchAlgorithmException {
         User createdUser = userService.createUser(request.getUserName(), request.getEmail(), request.getPassword());
-        CreateUserResponseDto createdUserResponse = CreateUserResponseDto.of(createdUser);
+        UserDto userDto = UserDto.of(createdUser);
+        CreateUserResponseDto createdUserResponse = CreateUserResponseDto.builder().userDto(userDto).build();
         return CodeResponse.successResult(createdUserResponse);
     }
 
@@ -34,7 +36,8 @@ public class UserController {
     @ResponseBody
     CodeResponse readUserById(@RequestParam long userId) {
         User readUser = userReadService.getUserById(userId);
-        ReadUserResponseDto readUserResponse = ReadUserResponseDto.of(readUser);
+        UserDto userDto = UserDto.of(readUser);
+        ReadUserResponseDto readUserResponse = ReadUserResponseDto.builder().userDto(userDto).build();
         return CodeResponse.successResult(readUserResponse);
     }
 
@@ -42,7 +45,8 @@ public class UserController {
     @ResponseBody
     CodeResponse readUserByName(@RequestParam String userName) {
         User readUser = userReadService.getUserByName(userName);
-        ReadUserResponseDto readUserResponse = ReadUserResponseDto.of(readUser);
+        UserDto userDto = UserDto.of(readUser);
+        ReadUserResponseDto readUserResponse = ReadUserResponseDto.builder().userDto(userDto).build();
         return CodeResponse.successResult(readUserResponse);
     }
 }

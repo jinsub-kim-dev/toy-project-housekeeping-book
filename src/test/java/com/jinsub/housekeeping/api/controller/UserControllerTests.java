@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jinsub.housekeeping.api.user.model.dto.CreateUserRequestDto;
 import com.jinsub.housekeeping.api.user.model.dto.CreateUserResponseDto;
 import com.jinsub.housekeeping.api.user.model.dto.ReadUserResponseDto;
+import com.jinsub.housekeeping.api.user.model.dto.UserDto;
 import com.jinsub.housekeeping.api.user.model.entity.User;
 import com.jinsub.housekeeping.api.user.repository.UserRepository;
 import com.jinsub.housekeeping.base.model.CodeResponse;
@@ -64,7 +65,7 @@ public class UserControllerTests {
         ObjectMapper objectMapper = new ObjectMapper();
         CodeResponse codeResponse = CodeResponse.class.cast(responseEntity.getBody());
         CreateUserResponseDto response = objectMapper.convertValue(codeResponse.getResult(), CreateUserResponseDto.class);
-        User testUser = userRepository.findById(response.getUserId()).get();
+        User testUser = userRepository.findById(response.getUserDto().getUserId()).get();
 
         assertThat(testUser.getUserName()).isEqualTo(testUserName);
     }
@@ -88,9 +89,9 @@ public class UserControllerTests {
         ObjectMapper objectMapper = new ObjectMapper();
         CodeResponse codeResponse = CodeResponse.class.cast(responseEntity.getBody());
         ReadUserResponseDto response = objectMapper.convertValue(codeResponse.getResult(), ReadUserResponseDto.class);
-        User testUser = userRepository.findById(response.getUserId()).get();
+        UserDto testUserDto = response.getUserDto();
 
-        assertThat(testUser.getUserName()).isEqualTo(testUserName);
+        assertThat(testUserDto.getUserName()).isEqualTo(testUserName);
     }
 
     @Test
@@ -112,8 +113,8 @@ public class UserControllerTests {
         ObjectMapper objectMapper = new ObjectMapper();
         CodeResponse codeResponse = CodeResponse.class.cast(responseEntity.getBody());
         ReadUserResponseDto response = objectMapper.convertValue(codeResponse.getResult(), ReadUserResponseDto.class);
-        User testUser = userRepository.findById(response.getUserId()).get();
+        UserDto testUserDto = response.getUserDto();
 
-        assertThat(testUser.getUserName()).isEqualTo(testUserName);
+        assertThat(testUserDto.getUserName()).isEqualTo(testUserName);
     }
 }
