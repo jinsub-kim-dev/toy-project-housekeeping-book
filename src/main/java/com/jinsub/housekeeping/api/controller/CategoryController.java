@@ -1,5 +1,6 @@
 package com.jinsub.housekeeping.api.controller;
 
+import com.jinsub.housekeeping.api.category.model.dto.CategoryDto;
 import com.jinsub.housekeeping.api.category.model.dto.CreateCategoryRequestDto;
 import com.jinsub.housekeeping.api.category.model.dto.CreateCategoryResponseDto;
 import com.jinsub.housekeeping.api.category.model.dto.ReadCategoryResponseDto;
@@ -24,7 +25,8 @@ public class CategoryController {
     @ResponseBody
     public CodeResponse createCategory(@RequestBody CreateCategoryRequestDto request) {
         Category createdCategory = categoryService.createCategory(request.getCategoryName(), request.getTransactionType(), request.getCategoryType());
-        CreateCategoryResponseDto response = CreateCategoryResponseDto.of(createdCategory);
+        CategoryDto categoryDto = CategoryDto.of(createdCategory);
+        CreateCategoryResponseDto response = CreateCategoryResponseDto.builder().categoryDto(categoryDto).build();
         return CodeResponse.successResult(response);
     }
 
@@ -32,7 +34,8 @@ public class CategoryController {
     @ResponseBody
     public CodeResponse readCategoryById(@RequestParam long categoryId) {
         Category readCategory = categoryReadService.getCategoryById(categoryId);
-        ReadCategoryResponseDto response = ReadCategoryResponseDto.of(readCategory);
+        CategoryDto categoryDto = CategoryDto.of(readCategory);
+        ReadCategoryResponseDto response = ReadCategoryResponseDto.builder().categoryDto(categoryDto).build();
         return CodeResponse.successResult(response);
     }
 }

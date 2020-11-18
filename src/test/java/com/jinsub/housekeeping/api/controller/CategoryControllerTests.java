@@ -2,6 +2,8 @@ package com.jinsub.housekeeping.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jinsub.housekeeping.api.category.enums.CategoryType;
+import com.jinsub.housekeeping.api.category.model.dto.CategoryDto;
+import com.jinsub.housekeeping.api.category.model.dto.CreateCategoryRequestDto;
 import com.jinsub.housekeeping.api.category.model.dto.CreateCategoryResponseDto;
 import com.jinsub.housekeeping.api.category.model.dto.ReadCategoryResponseDto;
 import com.jinsub.housekeeping.api.category.model.entity.Category;
@@ -46,7 +48,7 @@ public class CategoryControllerTests {
         String testCategoryName = "test category name";
         TransactionType testTransactionType = TransactionType.EXPENSE;
         CategoryType testCategoryType = CategoryType.COMMON;
-        CreateCategoryResponseDto request = CreateCategoryResponseDto.builder()
+        CreateCategoryRequestDto request = CreateCategoryRequestDto.builder()
                 .categoryName(testCategoryName)
                 .transactionType(testTransactionType)
                 .categoryType(testCategoryType)
@@ -62,7 +64,7 @@ public class CategoryControllerTests {
         ObjectMapper objectMapper = new ObjectMapper();
         CodeResponse codeResponse = CodeResponse.class.cast(responseEntity.getBody());
         CreateCategoryResponseDto response = objectMapper.convertValue(codeResponse.getResult(), CreateCategoryResponseDto.class);
-        Category testCategory = categoryRepository.findById(response.getCategoryId()).get();
+        Category testCategory = categoryRepository.findById(response.getCategoryDto().getCategoryId()).get();
 
         assertThat(testCategory.getCategoryName()).isEqualTo(testCategoryName);
         assertThat(testCategory.getTransactionType()).isEqualTo(testTransactionType);
@@ -87,9 +89,10 @@ public class CategoryControllerTests {
         ObjectMapper objectMapper = new ObjectMapper();
         CodeResponse codeResponse = CodeResponse.class.cast(responseEntity.getBody());
         ReadCategoryResponseDto response = objectMapper.convertValue(codeResponse.getResult(), ReadCategoryResponseDto.class);
+        CategoryDto testCategoryDto = response.getCategoryDto();
 
-        assertThat(response.getCategoryName()).isEqualTo(testCategoryName);
-        assertThat(response.getTransactionType()).isEqualTo(testTransactionType);
-        assertThat(response.getCategoryType()).isEqualTo(testCategoryType);
+        assertThat(testCategoryDto.getCategoryName()).isEqualTo(testCategoryName);
+        assertThat(testCategoryDto.getTransactionType()).isEqualTo(testTransactionType);
+        assertThat(testCategoryDto.getCategoryType()).isEqualTo(testCategoryType);
     }
 }
