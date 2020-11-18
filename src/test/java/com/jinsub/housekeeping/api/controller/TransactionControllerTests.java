@@ -8,6 +8,7 @@ import com.jinsub.housekeeping.api.transaction.enums.AssetType;
 import com.jinsub.housekeeping.api.transaction.enums.TransactionType;
 import com.jinsub.housekeeping.api.transaction.model.dto.CreateTransactionRequestDto;
 import com.jinsub.housekeeping.api.transaction.model.dto.CreateTransactionResponseDto;
+import com.jinsub.housekeeping.api.transaction.model.dto.ReadTransactionResponseDto;
 import com.jinsub.housekeeping.api.transaction.model.entity.Transaction;
 import com.jinsub.housekeeping.api.transaction.repository.TransactionRepository;
 import com.jinsub.housekeeping.api.user.model.entity.User;
@@ -93,5 +94,45 @@ public class TransactionControllerTests {
         assertThat(testTransaction.getTransactionType()).isEqualTo(TransactionType.EXPENSE);
         assertThat(testTransaction.getAmountOfMoney()).isEqualTo(testAmountOfMoney);
         assertThat(testTransaction.getDetails()).isEqualTo(testDetails);
+    }
+
+    @Test
+    public void 아이디로_트랜잭션을_조회한다() {
+        User user = userRepository.save(User.builder()
+                .userName("test user name")
+                .hashedEmail("test hashed email")
+                .hashedPassword("test hashed password")
+                .build());
+
+        Category category = categoryRepository.save(Category.builder()
+                .categoryName("test category name")
+                .transactionType(TransactionType.EXPENSE)
+                .categoryType(CategoryType.COMMON)
+                .build());
+
+        long testAmountOfMoney = 1000L;
+        String testDetails = "test details";
+        Transaction transaction = Transaction.builder()
+                .transactionType(TransactionType.EXPENSE)
+                .transactionDate(LocalDateTime.now())
+                .assetType(AssetType.CASH)
+                .amountOfMoney(testAmountOfMoney)
+                .details(testDetails)
+                .build();
+        transaction.setUser(user);
+        transaction.setCategory(category);
+
+        Transaction savedTransaction = transactionRepository.save(transaction);
+
+        String url = "http://localhost:" + port + "/api/v1/transaction/id?transactionId=" + savedTransaction.getTransactionId();
+
+        ResponseEntity<CodeResponse> responseEntity = testRestTemplate.getForEntity(url, CodeResponse.class);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        CodeResponse codeResponse = CodeResponse.class.cast(responseEntity.getBody());
+        ReadTransactionResponseDto response = objectMapper.convertValue(codeResponse.getResult(), ReadTransactionResponseDto.class);
+
+        assertThat(response.getAmountOfMoney()).isEqualTo(savedTransaction.getAmountOfMoney());
+        assertThat(response.getDetails()).isEqualTo(savedTransaction.getDetails());
     }
 }

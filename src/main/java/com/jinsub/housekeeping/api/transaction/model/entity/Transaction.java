@@ -21,7 +21,7 @@ public class Transaction extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long transactionId;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -36,7 +36,7 @@ public class Transaction extends BaseTimeEntity {
     @Enumerated(EnumType.ORDINAL)
     private AssetType assetType;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "category_id")
     private Category category;
 
