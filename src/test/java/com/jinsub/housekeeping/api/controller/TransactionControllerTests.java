@@ -9,6 +9,7 @@ import com.jinsub.housekeeping.api.transaction.enums.TransactionType;
 import com.jinsub.housekeeping.api.transaction.model.dto.CreateTransactionRequestDto;
 import com.jinsub.housekeeping.api.transaction.model.dto.CreateTransactionResponseDto;
 import com.jinsub.housekeeping.api.transaction.model.dto.ReadTransactionResponseDto;
+import com.jinsub.housekeeping.api.transaction.model.dto.TransactionDto;
 import com.jinsub.housekeeping.api.transaction.model.entity.Transaction;
 import com.jinsub.housekeeping.api.transaction.repository.TransactionRepository;
 import com.jinsub.housekeeping.api.user.model.entity.User;
@@ -89,7 +90,7 @@ public class TransactionControllerTests {
         ObjectMapper objectMapper = new ObjectMapper();
         CodeResponse codeResponse = CodeResponse.class.cast(responseEntity.getBody());
         CreateTransactionResponseDto response = objectMapper.convertValue(codeResponse.getResult(), CreateTransactionResponseDto.class);
-        Transaction testTransaction = transactionRepository.findById(response.getTransactionId()).get();
+        Transaction testTransaction = transactionRepository.findById(response.getTransactionDto().getTransactionId()).get();
 
         assertThat(testTransaction.getTransactionType()).isEqualTo(TransactionType.EXPENSE);
         assertThat(testTransaction.getAmountOfMoney()).isEqualTo(testAmountOfMoney);
@@ -131,8 +132,9 @@ public class TransactionControllerTests {
         ObjectMapper objectMapper = new ObjectMapper();
         CodeResponse codeResponse = CodeResponse.class.cast(responseEntity.getBody());
         ReadTransactionResponseDto response = objectMapper.convertValue(codeResponse.getResult(), ReadTransactionResponseDto.class);
+        TransactionDto testTransactionDto = response.getTransactionDto();
 
-        assertThat(response.getAmountOfMoney()).isEqualTo(savedTransaction.getAmountOfMoney());
-        assertThat(response.getDetails()).isEqualTo(savedTransaction.getDetails());
+        assertThat(testTransactionDto.getAmountOfMoney()).isEqualTo(savedTransaction.getAmountOfMoney());
+        assertThat(testTransactionDto.getDetails()).isEqualTo(savedTransaction.getDetails());
     }
 }

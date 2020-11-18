@@ -3,6 +3,7 @@ package com.jinsub.housekeeping.api.controller;
 import com.jinsub.housekeeping.api.transaction.model.dto.CreateTransactionRequestDto;
 import com.jinsub.housekeeping.api.transaction.model.dto.CreateTransactionResponseDto;
 import com.jinsub.housekeeping.api.transaction.model.dto.ReadTransactionResponseDto;
+import com.jinsub.housekeeping.api.transaction.model.dto.TransactionDto;
 import com.jinsub.housekeeping.api.transaction.model.entity.Transaction;
 import com.jinsub.housekeeping.api.transaction.service.TransactionReadService;
 import com.jinsub.housekeeping.api.transaction.service.TransactionService;
@@ -23,17 +24,19 @@ public class TransactionController {
     @PostMapping({"", "/"})
     @ResponseBody
     public CodeResponse createTransaction(@RequestBody CreateTransactionRequestDto request) {
-        Transaction transaction = transactionService.createTransaction(request.getUserId(), request.getTransactionType(), request.getTransactionDate(),
+        Transaction createdTransaction = transactionService.createTransaction(request.getUserId(), request.getTransactionType(), request.getTransactionDate(),
                 request.getAssetType(), request.getCategoryId(), request.getAmountOfMoney(), request.getDetails());
-        CreateTransactionResponseDto response = CreateTransactionResponseDto.of(transaction);
+        TransactionDto transactionDto = TransactionDto.of(createdTransaction);
+        CreateTransactionResponseDto response = CreateTransactionResponseDto.builder().transactionDto(transactionDto).build();
         return CodeResponse.successResult(response);
     }
 
     @GetMapping("/id")
     @ResponseBody
     public CodeResponse readTransactionById(@RequestParam long transactionId) {
-        Transaction transaction = transactionReadService.getTransactionById(transactionId);
-        ReadTransactionResponseDto response = ReadTransactionResponseDto.of(transaction);
+        Transaction readTransaction = transactionReadService.getTransactionById(transactionId);
+        TransactionDto transactionDto = TransactionDto.of(readTransaction);
+        ReadTransactionResponseDto response = ReadTransactionResponseDto.builder().transactionDto(transactionDto).build();
         return CodeResponse.successResult(response);
     }
 }
