@@ -22,6 +22,8 @@ public class TransactionService {
 
     // Services
     @Autowired
+    TransactionReadService transactionReadService;
+    @Autowired
     UserReadService userReadService;
     @Autowired
     CategoryReadService categoryReadService;
@@ -50,5 +52,21 @@ public class TransactionService {
         transaction.setCategory(category);
 
         return transactionRepository.save(transaction);
+    }
+
+    public Transaction updateTransaction(long transactionId,
+                                         TransactionType transactionType,
+                                         LocalDateTime transactionDate,
+                                         AssetType assetType,
+                                         long amountOfMoney,
+                                         String details) {
+
+        Transaction transaction = transactionReadService.getTransactionById(transactionId);
+        transaction.modifyTransactionType(transactionType);
+        transaction.modifyTransactionDate(transactionDate);
+        transaction.modifyAssetType(assetType);
+        transaction.modifyAmountOfMoney(amountOfMoney);
+        transaction.modifyDetails(details);
+        return transaction;
     }
 }

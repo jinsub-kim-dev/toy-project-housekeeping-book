@@ -61,4 +61,39 @@ public class Transaction extends BaseTimeEntity {
         this.category = category;
         this.category.getTransactionList().add(this);
     }
+
+    public void modifyTransactionType(TransactionType transactionType) {
+        if (this.transactionType.equals(transactionType)) {
+            return;
+        }
+        this.transactionType = transactionType;
+    }
+
+    public void modifyTransactionDate(LocalDateTime transactionDate) {
+        if (this.transactionDate.equals(transactionDate)) {
+            return;
+        }
+        this.transactionDate = transactionDate;
+    }
+
+    public void modifyAssetType(AssetType assetType) {
+        if (this.assetType.equals(assetType)) {
+            return;
+        }
+        this.assetType = assetType;
+    }
+
+    public void modifyAmountOfMoney(long amountOfMoney) {
+        if ((this.amountOfMoney == amountOfMoney) || (amountOfMoney < 0)) {
+            return;
+        }
+        this.amountOfMoney = amountOfMoney;
+    }
+
+    public void modifyDetails(String details) {
+        if (this.details.equals(details)) {
+            return;
+        }
+        this.details = details;
+    }
 }

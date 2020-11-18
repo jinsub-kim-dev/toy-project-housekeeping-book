@@ -64,4 +64,40 @@ public class TransactionServiceTests {
         assertThat(user.getTransactionList().size()).isGreaterThan(0);
         assertThat(category.getTransactionList().size()).isGreaterThan(0);
     }
+
+    @Test
+    public void 트랜잭션을_수정한다() {
+        User user = userRepository.save(User.builder()
+                .userName("test user name")
+                .hashedEmail("test hashed email")
+                .hashedPassword("test hashed password")
+                .build());
+
+        Category category = categoryRepository.save(Category.builder()
+                .categoryName("test category name")
+                .transactionType(TransactionType.EXPENSE)
+                .categoryType(CategoryType.COMMON)
+                .build());
+
+        Transaction savedTransaction = transactionService.createTransaction(user.getUserId(),
+                TransactionType.EXPENSE, LocalDateTime.now(), AssetType.CASH, category.getCategoryId(),
+                1000, "test details");
+
+        TransactionType modifiedTransactionType = TransactionType.INCOME;
+        LocalDateTime modifiedTransactionDate = savedTransaction.getTransactionDate().minusDays(1L);
+        AssetType modifiedAssetType = AssetType.CARD;
+        long modifiedAmountOfMoney = 2000L;
+        String modifiedDetails = "modified details";
+
+        transactionService.updateTransaction(savedTransaction.getTransactionId(), modifiedTransactionType,
+                modifiedTransactionDate, modifiedAssetType, modifiedAmountOfMoney, modifiedDetails);
+
+        Transaction modifiedTransaction = transactionRepository.findById(savedTransaction.getTransactionId()).get();
+
+        assertThat(modifiedTransaction.getTransactionType()).isEqualTo(modifiedTransactionType);
+        assertThat(modifiedTransaction.getTransactionDate()).isEqualTo(modifiedTransactionDate);
+        assertThat(modifiedTransaction.getAssetType()).isEqualTo(modifiedAssetType);
+        assertThat(modifiedTransaction.getAmountOfMoney()).isEqualTo(modifiedAmountOfMoney);
+        assertThat(modifiedTransaction.getDetails()).isEqualTo(modifiedDetails);
+    }
 }
