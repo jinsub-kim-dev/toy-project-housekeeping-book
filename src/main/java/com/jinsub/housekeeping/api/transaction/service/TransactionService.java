@@ -10,6 +10,8 @@ import com.jinsub.housekeeping.api.user.model.entity.User;
 import com.jinsub.housekeeping.api.user.service.UserReadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -28,6 +30,7 @@ public class TransactionService {
     @Autowired
     CategoryReadService categoryReadService;
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Transaction createTransaction(
             long userId,
             TransactionType transactionType,

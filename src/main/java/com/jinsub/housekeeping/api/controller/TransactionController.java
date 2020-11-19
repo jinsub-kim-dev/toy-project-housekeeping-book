@@ -1,9 +1,6 @@
 package com.jinsub.housekeeping.api.controller;
 
-import com.jinsub.housekeeping.api.transaction.model.dto.CreateTransactionRequestDto;
-import com.jinsub.housekeeping.api.transaction.model.dto.CreateTransactionResponseDto;
-import com.jinsub.housekeeping.api.transaction.model.dto.ReadTransactionResponseDto;
-import com.jinsub.housekeeping.api.transaction.model.dto.TransactionDto;
+import com.jinsub.housekeeping.api.transaction.model.dto.*;
 import com.jinsub.housekeeping.api.transaction.model.entity.Transaction;
 import com.jinsub.housekeeping.api.transaction.service.TransactionReadService;
 import com.jinsub.housekeeping.api.transaction.service.TransactionService;
@@ -37,6 +34,16 @@ public class TransactionController {
         Transaction readTransaction = transactionReadService.getTransactionById(transactionId);
         TransactionDto transactionDto = TransactionDto.of(readTransaction);
         ReadTransactionResponseDto response = ReadTransactionResponseDto.builder().transactionDto(transactionDto).build();
+        return CodeResponse.successResult(response);
+    }
+
+    @PutMapping({"", "/"})
+    @ResponseBody
+    public CodeResponse updateTransaction(@RequestBody UpdateTransactionRequestDto request) {
+        Transaction updatedTransaction = transactionService.updateTransaction(request.getTransactionId(), request.getTransactionType(),
+                request.getTransactionDate(), request.getAssetType(), request.getAmountOfMoney(), request.getDetails());
+        TransactionDto transactionDto = TransactionDto.of(updatedTransaction);
+        UpdateTransactionResponseDto response = UpdateTransactionResponseDto.builder().transactionDto(transactionDto).build();
         return CodeResponse.successResult(response);
     }
 }

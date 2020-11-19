@@ -92,12 +92,12 @@ public class TransactionServiceTests {
         transactionService.updateTransaction(savedTransaction.getTransactionId(), modifiedTransactionType,
                 modifiedTransactionDate, modifiedAssetType, modifiedAmountOfMoney, modifiedDetails);
 
-        Transaction modifiedTransaction = transactionRepository.findById(savedTransaction.getTransactionId()).get();
+        Transaction testTransaction = transactionRepository.findById(savedTransaction.getTransactionId()).get();
 
-        assertThat(modifiedTransaction.getTransactionType()).isEqualTo(modifiedTransactionType);
-        assertThat(modifiedTransaction.getTransactionDate()).isEqualTo(modifiedTransactionDate);
-        assertThat(modifiedTransaction.getAssetType()).isEqualTo(modifiedAssetType);
-        assertThat(modifiedTransaction.getAmountOfMoney()).isEqualTo(modifiedAmountOfMoney);
-        assertThat(modifiedTransaction.getDetails()).isEqualTo(modifiedDetails);
+        assertThat(testTransaction.getTransactionType()).isEqualTo(modifiedTransactionType);
+        assertThat(testTransaction.getTransactionDate()).isEqualTo(modifiedTransactionDate);
+        assertThat(testTransaction.getAssetType()).isEqualTo(modifiedAssetType);
+        assertThat(testTransaction.getAmountOfMoney()).isEqualTo(modifiedAmountOfMoney);
+        assertThat(testTransaction.getDetails()).isEqualTo(modifiedDetails);
     }
 }
