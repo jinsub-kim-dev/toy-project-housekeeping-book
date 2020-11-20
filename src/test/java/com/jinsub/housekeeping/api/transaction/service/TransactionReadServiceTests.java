@@ -18,6 +18,9 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -78,5 +81,46 @@ public class TransactionReadServiceTests {
     public void 존재하지_않는_트랜잭션Id로_조회하는_경우() {
         final long INVALID_TRANSACTION_ID = -1;
         Transaction transaction = transactionReadService.getTransactionById(INVALID_TRANSACTION_ID);
+    }
+
+    @Test
+    public void 유저의_모든_트랜잭션을_조회한다() {
+        User user = userRepository.save(User.builder()
+                .userName("test user name")
+                .hashedEmail("test hashed email")
+                .hashedPassword("test hashed password")
+                .build());
+
+        Category category = categoryRepository.save(Category.builder()
+                .categoryName("test category name")
+                .transactionType(TransactionType.EXPENSE)
+                .categoryType(CategoryType.COMMON)
+                .build());
+
+        final int NUM_OF_TRANSACTION = 3;
+        List<Long> testAmountOfMonetList = Arrays.asList(1000L, 5000L, 2000L);
+        List<String> testDetailsList = Arrays.asList("test details 1", "test details 2", "test details 3");
+        List<Transaction> transactionList = new ArrayList<>();
+        for (int i = 0; i < NUM_OF_TRANSACTION; i++) {
+            Transaction transaction = Transaction.builder()
+                    .transactionType(TransactionType.EXPENSE)
+                    .transactionDate(LocalDateTime.now())
+                    .assetType(AssetType.CASH)
+                    .amountOfMoney(testAmountOfMonetList.get(i))
+                    .details(testDetailsList.get(i))
+                    .build();
+            transaction.setUser(user);
+            transaction.setCategory(category);
+
+            transactionList.add(transactionRepository.save(transaction));
+        }
+
+        List<Transaction> testTransactionList = transactionReadService.getUserTransactionList(user.getUserId());
+
+        assertThat(testTransactionList.size()).isEqualTo(NUM_OF_TRANSACTION);
+        for (int i = 0; i < NUM_OF_TRANSACTION; i++) {
+            assertThat(testTransactionList.get(i).getAmountOfMoney()).isEqualTo(testAmountOfMonetList.get(i));
+            assertThat(testTransactionList.get(i).getDetails()).isEqualTo(testDetailsList.get(i));
+        }
     }
 }
