@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Controller
 @RequestMapping("/api/v1/transaction")
 public class TransactionController {
@@ -34,6 +37,17 @@ public class TransactionController {
         Transaction readTransaction = transactionReadService.getTransactionById(transactionId);
         TransactionDto transactionDto = TransactionDto.of(readTransaction);
         ReadTransactionResponseDto response = ReadTransactionResponseDto.builder().transactionDto(transactionDto).build();
+        return CodeResponse.successResult(response);
+    }
+
+    @GetMapping("/list/user")
+    @ResponseBody
+    public CodeResponse readUserTransactionList(@RequestParam long userId) {
+        List<Transaction> transactionList = transactionReadService.getUserTransactionList(userId);
+        List<TransactionDto> transactionDtoList = transactionList.stream()
+                .map(TransactionDto::of)
+                .collect(Collectors.toList());
+        ReadUserTransactionListResponseDto response = ReadUserTransactionListResponseDto.builder().transactionDtoList(transactionDtoList).build();
         return CodeResponse.successResult(response);
     }
 
